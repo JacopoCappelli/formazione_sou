@@ -1,0 +1,13 @@
+- name: Terminale o cabinato?
+  hosts: all
+  become: yes
+
+  tasks:
+  
+    - name: Installazione Moon Buggy 
+      apt:
+        name: moon-buggy
+        state: present
+        update_cache: yes
+
+

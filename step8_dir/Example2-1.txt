@@ -1,0 +1,4 @@
+cd /var/log  //si sposta nella cartella log
+cat /dev/null > messages //svuota completamente il file messages
+cat /dev/null > wtmp //compie la stessa azione ma per il file wtmp
+echo "Log files cleaned up."//stampa la scritta che conferma la cancellazione dei log

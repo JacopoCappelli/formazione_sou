@@ -1,0 +1,39 @@
+#!/bin/bash
+# am-i-root.sh:   Am I root or not?
+ 
+ROOT_UID=0   
+ 
+if [ "$UID" -eq "$ROOT_UID" ] 
+then
+  echo "You are root."
+else
+  echo "You are just an ordinary user (but mom loves you just the same)."
+fi
+ 
+
+# ============================================================= #
+# Code below will not execute, because the script already exited.
+ 
+# An alternate method of getting to the root of matters:
+ 
+ROOTUSER_NAME=root
+ 
+username=`id -nu`              # Or...   username=`whoami`
+if [ "$username" == "$ROOTUSER_NAME" ]
+then
+  echo "Rooty, toot, toot. You are root."
+else
+  echo "You are just a regular fella."
+fi
+
+
+/*
+Questi costrutti "if" si occupano entrambi della stessa mansione: veriificare se l'utente loggato corrisponde all' utente di root. Cambia solo la sintassi 
+in quanto nella prima versione le variabili $ROOT_UID  e $UID corrispondono a degli  interi e come operatore di comparazione viene utilizzato "-eq", 
+nella seconda la variabile "ROOTUSER_NAME" punta direttamente all'utente di root così come username corrisponde al comando linux per restituire il nome dell'utente. 
+Infine come operatore di comparazione nella condizione viene utilizzato "==" . 
+
+*/
+
+
+

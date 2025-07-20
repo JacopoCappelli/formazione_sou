@@ -1,0 +1,35 @@
+#! /bin/bash
+# progress-bar2.sh
+# Author: Graham Ewart (with reformatting by ABS Guide author).
+# Used in ABS Guide with permission (thanks!).
+ 
+# Invoke this script with bash. It doesn't work with sh.
+ 
+interval=1
+long_interval=10
+ 
+{
+     trap "exit" SIGUSR1 // quando riceve il segnal SIGUR1 esce dal blocco
+     sleep $interval; sleep $interval
+     while true
+     do
+       echo -n '.'     # Use dots.
+       sleep $interval
+     done; } &     
+     //esegue una barra di caricamento in background , oogni secondo stampa " . "
+ 
+pid=$! //salva il processo in background
+trap "echo !; kill -USR1 $pid; wait $pid"  EXIT  
+
+//quando lo script termina (anche con Ctrl+C), manda un SIGUSR1 al processo della barra per farlo interrompere pulitamente, e attende che finisca (wait).
+ 
+echo -n 'Long-running process '
+sleep $long_interval
+echo ' Finished!'
+//dalla riga 26 all riga 28 vi è l'istruzione per stampare i puntini 
+ 
+kill -USR1 $pid //si invia il segnale per terminare il processo della barra
+wait $pid  // siattende che la barra termini        
+trap EXIT //il comando "trap" viene impostato in uscita 
+ 
+exit $? // codice ritorno che fa riferimento all'ultimo comando
