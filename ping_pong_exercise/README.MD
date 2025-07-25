@@ -14,7 +14,7 @@ Questo progetto automatizza l'orchestrazione di due container Docker (`ealen/ech
   - Il container su Ubuntu espone la porta `8080`
   - Il container su Debian espone la porta `8081`
   - Lo script registra tutto in un file di log giornaliero 
-  - Se una delle due VM viene spenta, lo script si arresta automaticamente
+  - Se una delle due VM viene spenta, lo script si arresta automaticamente 
 
 ---
 
