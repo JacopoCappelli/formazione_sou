@@ -1,0 +1,25 @@
+---
+- name: Automatizzazione di installazione e disinstallazione di pacchetti 
+  hosts: all
+  vars:
+    packages:
+      - name: curl 
+      - name: iputils-ping
+      - name: net-tools
+      - name: apache2
+
+  tasks:
+    - name: Iterazione per installare i componenti del dizionario 
+      ansible.builtin.package:
+        name: "{{ item.name }}"
+        state: present
+      loop: "{{ packages }}"
+
+  
+    - name: Iterazione per disinstallare i componenti del dizionario 
+      ansible.builtin.package:
+        name: "{{ item.name }}"
+        state: absent
+      loop: "{{ packages }}"
+ 
+ 

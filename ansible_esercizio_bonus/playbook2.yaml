@@ -1,0 +1,39 @@
+---
+- name: creazione lista di utenti 
+  hosts: localhost
+
+  vars:
+    users:
+
+      Antonio:
+        gruppo: developers
+        home_directory: usr/dvlprs/
+        shell: /bin/bash 
+
+      Mario:
+        gruppo: marketing-and-comunication
+        home_directory: usr/mrkts/
+        shell: /bin/bash
+
+      Marcella:
+        gruppo: designers
+        home_directory: usr/dsgnrs/
+        shell: /bin/bash    
+
+  tasks:
+
+    - name: Mostra la lista
+      debug:
+        msg: "{{ users }}"
+      
+
+
+    
+   
+
+          
+          
+    
+
+
+  
