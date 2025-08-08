@@ -1,0 +1,16 @@
+- hosts: debian-node
+  become: true
+  vars:
+    whitelist_users:
+      - mario
+      - marco
+      - antonello
+  tasks:
+    - name: Aggiungi utenti whitelist a /etc/security/access.conf
+      blockinfile:
+        path: /etc/security/access.conf
+        block: |
+          {% for user in whitelist_users %}
+          + : {{ user }} : ALL
+          {% endfor %}
+        create: yes

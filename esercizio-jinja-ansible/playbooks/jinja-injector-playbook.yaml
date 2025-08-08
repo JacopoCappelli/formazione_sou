@@ -1,0 +1,51 @@
+- hosts: debian-node
+  become: true
+  vars:
+    user: vagrant
+    env: dev
+
+  tasks:
+    - name: Aggiorna apt cache e installa python3-jinja2
+      apt:
+        name: python3-jinja2
+        state: present
+        update_cache: yes
+
+    - name: Copia lo script Python sulla macchina remota
+      copy:
+        src: jinjaexecutor.py
+        dest: /tmp/jinjaexecutor.py
+        mode: '0755'
+
+    - name: Copia il template Jinja sulla macchina remota
+      copy:
+        src: jinja-conf.j2
+        dest: /tmp/jinja-conf.j2
+        mode: '0644'
+
+    - name: Esegui lo script Python sulla macchina remota
+      command: python3 /tmp/jinjaexecutor.py
+      args:
+        chdir: /tmp
+
+    - name: Verifica se il file /tmp/output.txt esiste
+      stat:
+        path: /tmp/output.txt
+      register: output_stat
+
+    - name: Fallisci se il file /tmp/output.txt non è stato creato
+      fail:
+        msg: "Il file /tmp/output.txt non è stato creato dallo script Python!"
+      when: not output_stat.stat.exists
+
+    - name: Leggi il file output.txt generato sulla macchina remota
+      slurp:
+        src: /tmp/output.txt
+      register: output_file
+
+    - name: Aggiungi il blocco generato al file limits.conf
+      blockinfile:
+        path: /etc/security/limits.conf
+        block: "{{ output_file.content | b64decode }}"
+        insertafter: EOF
+        create: yes

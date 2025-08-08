@@ -1,0 +1,20 @@
+{% for element in file %}
+  {% if element.domain == '@produzione' %}
+    {% set type = 'hard' %}
+    {% set item = 'locks' %}
+    {% set value = 10000 %}
+      
+    {{ element.domain }} {{ type }} {{ item }} {{ value }}
+
+  {% elif element.domain == '@collaudo' or element.domain == '@sviluppo' %}
+    {% set type = 'hard' %}
+    {% set item = 'locks' %}
+    {% set value = 1000 %}
+    {{ element.domain }} {{ type }} {{ item }} {{ value }}
+
+  {% else %}
+    Non ci sono modifiche da effettuare
+  {% endif %}
+
+
+{% endfor %}
