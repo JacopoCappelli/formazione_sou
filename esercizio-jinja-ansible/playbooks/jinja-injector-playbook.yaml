@@ -3,30 +3,23 @@
   vars:
     user: vagrant
     env: dev
+    file_data:
+      - domain: "@produzione"
+      - domain: "@collaudo"
+      - domain: "@sviluppo"
 
   tasks:
-    - name: Aggiorna apt cache e installa python3-jinja2
+    - name: Aggiorna apt cache e installa Jinja2 runtime (python3-jinja2)
       apt:
         name: python3-jinja2
         state: present
         update_cache: yes
 
-    - name: Copia lo script Python sulla macchina remota
-      copy:
-        src: jinjaexecutor.py
-        dest: /tmp/jinjaexecutor.py
-        mode: '0755'
-
-    - name: Copia il template Jinja sulla macchina remota
-      copy:
-        src: jinja-conf.j2
-        dest: /tmp/jinja-conf.j2
+    - name: Crea il file renderizzato da Jinja sulla macchina remota
+      template:
+        src: templates/jinja-conf.j2
+        dest: /tmp/output.txt
         mode: '0644'
-
-    - name: Esegui lo script Python sulla macchina remota
-      command: python3 /tmp/jinjaexecutor.py
-      args:
-        chdir: /tmp
 
     - name: Verifica se il file /tmp/output.txt esiste
       stat:
@@ -35,7 +28,7 @@
 
     - name: Fallisci se il file /tmp/output.txt non è stato creato
       fail:
-        msg: "Il file /tmp/output.txt non è stato creato dallo script Python!"
+        msg: "Il file /tmp/output.txt non è stato creato dal template!"
       when: not output_stat.stat.exists
 
     - name: Leggi il file output.txt generato sulla macchina remota
