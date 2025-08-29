@@ -1,0 +1,25 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3200     
+  grpc_listen_port: 4317    
+otlp:
+  protocols:
+    grpc:
+    http:
+
+storage:
+  trace:
+    backend: local          
+    local:
+      path: /tmp/tempo     
+    wal:
+      path: /tmp/tempo/wal  
+limits:
+  max_traces_per_query: 10000
+  max_trace_size_mib: 100
+
+ingester:
+  max_block_duration: 1h
+  max_look_back_period: 168h 
+

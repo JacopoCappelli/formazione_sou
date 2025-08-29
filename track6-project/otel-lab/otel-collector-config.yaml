@@ -1,0 +1,33 @@
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+  memory_limiter:
+    limit_mib: 4000
+    spike_limit_mib: 200
+    check_interval: 5s
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:9464"
+  debug: {}  
+  otlp:
+    endpoint: "tempo:4317"
+    
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [prometheus, debug]
+    traces:
+      receivers: [otlp]
+      processors: [batch, memory_limiter]
+      exporters: [otlp, debug]
