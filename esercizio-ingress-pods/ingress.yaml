@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: multilingual-ingress
+  namespace: my-app  # Aggiungi namespace
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /eng
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-world-svc
+                port:
+                  number: 80
+          - path: /ita
+            pathType: Prefix
+            backend:
+              service:
+                name: ciao-mondo-svc
+                port:
+                  number: 80

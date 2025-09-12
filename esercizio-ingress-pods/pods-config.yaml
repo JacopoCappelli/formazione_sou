@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-app
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-world
+  namespace: my-app
+  labels:
+    app: hello-world
+spec:
+  containers:
+    - name: hellowroldcontainer
+      image: nginxdemos/hello
+      ports:
+        - containerPort: 80
+      env:
+        - name: NGINX_HELLO_MESSAGE
+          value: "Hello World"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-svc
+  namespace: my-app  # Aggiungi namespace
+spec:
+  selector:
+    app: hello-world
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ciao-mondo
+  namespace: my-app
+  labels:
+    app: ciao-mondo
+spec:
+  
+ containers:
+    - name: ciaomondocontainer
+      image: nginxdemos/hello
+      ports:
+        - containerPort: 80
+      env:
+        - name: NGINX_HELLO_MESSAGE
+          value: "Ciao Mondo"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ciao-mondo-svc
+  namespace: my-app  # Aggiungi namespace
+spec:
+  selector:
+    app: ciao-mondo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
